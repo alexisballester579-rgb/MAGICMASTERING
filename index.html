@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Mastering</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Poppins', sans-serif; margin:0; padding:0; background:#f9fafb; color:#333; }
+
+/* HEADER */
+header { background: linear-gradient(135deg,#4a00e0,#8e2de2); color:white; padding:100px 20px; text-align:center; }
+header h1 { font-size:3.5em; margin-bottom:15px; font-weight:700; }
+header p { font-size:1.3em; opacity:0.9; }
+
+/* NAV */
+nav { background:#111; padding:15px; text-align:center; position:sticky; top:0; z-index:1000; }
+nav a { color:white; margin:0 20px; text-decoration:none; font-weight:500; transition:color 0.3s; font-size:1.05em; }
+nav a:hover { color:#8e2de2; }
+
+/* SECCIONES */
+section { padding:80px 20px; max-width:1100px; margin:auto; text-align:center; }
+h2 { color:#4a00e0; font-size:2.5em; margin-bottom:30px; font-weight:700; }
+p.lead { font-size:1.2em; max-width:700px; margin:auto; margin-bottom:40px; color:#555; }
+
+/* CARDS */
+.card { background:white; padding:40px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); margin-bottom:40px; transition: transform 0.3s, box-shadow 0.3s; }
+.card:hover { transform: translateY(-8px); box-shadow:0 15px 40px rgba(0,0,0,0.15); }
+
+/* BOTONES */
+button, .btn, input[type=submit] { background: linear-gradient(90deg,#4a00e0,#8e2de2); color:white; border:none; padding:14px 30px; border-radius:35px; cursor:pointer; font-size:1em; font-weight:600; transition:transform 0.2s, background 0.3s; text-decoration:none; display:inline-block; }
+button:hover, .btn:hover, input[type=submit]:hover { transform: scale(1.07); background: linear-gradient(90deg,#3600b0,#6d1dbf); }
+
+/* UPLOAD */
+#audioFile { margin-top:15px; font-size:1em; }
+.message { margin-top:15px; color:#4a00e0; font-weight:bold; display:none; }
+#previewContainer { margin-top:20px; display:none; }
+
+/* PLANES */
+.price { font-size:1.5em; font-weight:700; color:#111; margin:20px 0; }
+
+/* FORMULARIO REGISTRO */
+form label { display:block; margin-top:15px; text-align:left; font-weight:600; color:#333; }
+form input { width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; margin-top:5px; }
+
+/* CONTACTO */
+.card a { color:#4a00e0; font-weight:600; text-decoration:none; }
+.card a:hover { text-decoration:underline; }
+
+/* FOOTER */
+footer { background:#111; color:#aaa; text-align:center; padding:25px; font-size:0.9em; margin-top:40px; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>Magic Mastering</h1>
+<p>Masteriza tu música online con calidad profesional</p>
+<a href="#upload" class="btn" style="margin-top:25px;">🚀 Empieza Ahora</a>
+</header>
+
+<nav>
+<a href="#upload">Subir Audio</a>
+<a href="#subscripciones">Planes</a>
+<a href="#registro">Crear Cuenta</a>
+<a href="#contacto">Contacto</a>
+</nav>
+
+<section id="upload">
+<h2>Sube tu pista</h2>
+<p class="lead">Carga tu archivo de audio y masterízalo directamente en tu navegador, gratis o con opciones premium.</p>
+<div class="card">
+<input type="file" accept="audio/*" id="audioFile">
+<br><br>
+<button onclick="masterizarBasico()">🎧 Masterizar Básico (Gratis)</button>
+<button onclick="masterizarPremium()">🔥 Masterizar Premium ($2.99)</button>
+<p class="message" id="statusMessage">
+  <span id="spinner">⏳</span> <span id="statusText">Procesando audio...</span>
+</p>
+<div id="previewContainer">
+    <p><strong>Previsualización Premium:</strong></p>
+    <audio id="previewAudio" controls></audio>
+    <br>
+    <button id="downloadBtn">⬇️ Descargar Masterizado</button>
+</div>
+</div>
+</section>
+
+<section id="subscripciones">
+<h2>Planes de Mastering</h2>
+<p class="lead">Elige el plan que mejor se adapte a tus necesidades musicales.</p>
+<div class="card">
+<h3>✨ Mastering Premium</h3>
+<p>Accede a un mastering de nivel profesional con ecualización avanzada y compresión optimizada.</p>
+<p class="price">$2.99 por pista</p>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+  <input type="hidden" name="cmd" value="_xclick">
+  <input type="hidden" name="business" value="alexitocrack1@gmail.com">
+  <input type="hidden" name="currency_code" value="USD">
+  <input type="hidden" name="item_name" value="Mastering Premium - Magic Mastering">
+  <input type="hidden" name="amount" value="2.99">
+  <input type="submit" value="💳 Pagar con PayPal" class="btn">
+</form>
+<br>
+<button onclick="activarPremium()">🔑 Activar Premium</button>
+</div>
+</section>
+
+<section id="registro">
+<h2>Crear Cuenta</h2>
+<p class="lead">Regístrate para guardar tus pistas y acceder más rápido a funciones premium.</p>
+<div class="card" style="max-width:500px; margin:auto; text-align:left;">
+<form id="signupForm" onsubmit="registrarUsuario(event)">
+  <label for="nombre">Nombre completo</label>
+  <input type="text" id="nombre" name="nombre" required>
+
+  <label for="email">Correo electrónico</label>
+  <input type="email" id="email" name="email" required>
+
+  <label for="password">Contraseña</label>
+  <input type="password" id="password" name="password" required>
+
+  <br>
+  <input type="submit" value="📝 Crear Cuenta">
+</form>
+<p id="registroMensaje" style="margin-top:15px; font-weight:bold; color:#4a00e0; display:none;">Cuenta creada con éxito 🎉</p>
+</div>
+</section>
+
+<section id="contacto">
+<h2>Contacto</h2>
+<p class="lead">¿Tienes alguna duda o quieres más información? Escríbenos:</p>
+<div class="card">
+<p><strong>Email:</strong> <a href="mailto:alexisballester579@gmail.com">alexisballester579@gmail.com</a></p>
+</div>
+</section>
+
+<footer>
+<p>&copy; 2025 Magic Mastering. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+const isPremium = { status: false };
+let lastBlob = null;
+
+function activarPremium() {
+    if(isPremium.status){
+        alert("Ya tienes acceso a Mastering Premium.");
+        return;
+    }
+    if(confirm("¿Confirmas que ya realizaste el pago de $2.99 por PayPal?")){
+        isPremium.status = true;
+        alert("¡Mastering Premium activado! Ahora puedes masterizar tus pistas con funciones avanzadas.");
+    }
+}
+
+function registrarUsuario(e){
+    e.preventDefault();
+    document.getElementById("registroMensaje").style.display = "block";
+    document.getElementById("signupForm").reset();
+}
+
+async function masterizarBasico() {
+    if (!document.getElementById('audioFile').files.length) { 
+        alert("Sube un archivo primero."); 
+        return; 
+    }
+    await masterizar(false);
+}
+
+async function masterizarPremium() {
+    if (!document.getElementById('audioFile').files.length) { 
+        alert("Sube un archivo primero."); 
+        return; 
+    }
+    if (!isPremium.status) { 
+        alert("Debes activar Mastering Premium para usar esta función."); 
+        return; 
+    }
+    await masterizar(true);
+}
+
+async function masterizar(esPremium) {
+    const fileInput = document.getElementById('audioFile');
+    const message = document.getElementById('statusMessage');
+    const statusText = document.getElementById('statusText');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewAudio = document.getElementById('previewAudio');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    previewContainer.style.display = 'none';
+    message.style.display = 'block';
+    statusText.textContent = '🎵 Procesando audio...';
+
+    try {
+        const file = fileInput.files[0];
+        const arrayBuffer = await file.arrayBuffer();
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+        const offlineCtx = new OfflineAudioContext(
+            audioBuffer.numberOfChannels,
+            audioBuffer.length,
+            audioBuffer.sampleRate
+        );
+
+        const source = offlineCtx.createBufferSource();
+        source.buffer = audioBuffer;
+
+        if(esPremium){
+            const low = offlineCtx.createBiquadFilter(); low.type="lowshelf"; low.frequency.value=200; low.gain.value=8;
+            const mid = offlineCtx.createBiquadFilter(); mid.type="peaking"; mid.frequency.value=1000; mid.Q.value=1; mid.gain.value=5;
+            const high = offlineCtx.createBiquadFilter(); high.type="highshelf"; high.frequency.value=5000; high.gain.value=5;
+            const compressor = offlineCtx.createDynamicsCompressor();
+            compressor.threshold.setValueAtTime(-30, offlineCtx.currentTime);
+            compressor.ratio.setValueAtTime(5, offlineCtx.currentTime);
+            compressor.attack.setValueAtTime(0.005, offlineCtx.currentTime);
+            compressor.release.setValueAtTime(0.1, offlineCtx.currentTime);
+            const gainNode = offlineCtx.createGain(); gainNode.gain.value = 1.2;
+
+            source.connect(low); low.connect(mid); mid.connect(high); high.connect(compressor); compressor.connect(gainNode); gainNode.connect(offlineCtx.destination);
+
+        } else {
+            const compressor = offlineCtx.createDynamicsCompressor();
+            compressor.threshold.setValueAtTime(-20, offlineCtx.currentTime);
+            compressor.ratio.setValueAtTime(2, offlineCtx.currentTime);
+            compressor.attack.setValueAtTime(0.003, offlineCtx.currentTime);
+            compressor.release.setValueAtTime(0.1, offlineCtx.currentTime);
+            source.connect(compressor); compressor.connect(offlineCtx.destination);
+        }
+
+        source.start();
+        statusText.textContent = '⏳ Masterizando... esto puede tardar unos segundos';
+        const renderedBuffer = await offlineCtx.startRendering();
+
+        function bufferToWave(abuffer){
+            const numOfChan = abuffer.numberOfChannels;
+            const length = abuffer.length * numOfChan * 2 + 44;
+            const buffer = new ArrayBuffer(length);
+            const view = new DataView(buffer);
+            let offset = 0;
+            function writeUint16(data){ view.setUint16(offset,data,true); offset+=2; }
+            function writeUint32(data){ view.setUint32(offset,data,true); offset+=4; }
+
+            writeUint32(0x46464952); writeUint32(length-8); writeUint32(0x45564157);
+            writeUint32(0x20746d66); writeUint32(16); writeUint16(1); writeUint16(numOfChan);
+            writeUint32(abuffer.sampleRate); writeUint32(abuffer.sampleRate*numOfChan*2);
+            writeUint16(numOfChan*2); writeUint16(16); writeUint32(0x61746164);
+            writeUint32(length-offset-4);
+
+            const channels=[];
+            for(let i=0;i<numOfChan;i++) channels.push(abuffer.getChannelData(i));
+            for(let i=0;i<abuffer.length;i++)
+                for(let ch=0;ch<numOfChan;ch++){
+                    let sample=Math.max(-1,Math.min(1,channels[ch][i]));
+                    sample=sample<0?sample*0x8000:sample*0x7FFF;
+                    view.setInt16(offset,sample,true); offset+=2;
+                }
+            return new Blob([buffer],{type:"audio/wav"});
+        }
+
+        const wavBlob = bufferToWave(renderedBuffer);
+        lastBlob = wavBlob;
+
+        if(esPremium){
+            const url = URL.createObjectURL(wavBlob);
+            previewAudio.src = url;
+            previewContainer.style.display = 'block';
+            downloadBtn.onclick = () => { 
+                const a=document.createElement("a"); 
+                a.href=url; 
+                a.download='masterizado_premium.wav'; 
+                document.body.appendChild(a); 
+                a.click(); 
+                a.remove(); 
+            };
+        } else {
+            const url = URL.createObjectURL(wavBlob);
+            const a=document.createElement("a"); 
+            a.href=url; 
+            a.download='masterizado_basico.wav'; 
+            document.body.appendChild(a); 
+            a.click(); 
+            a.remove();
+        }
+
+        statusText.textContent = `✅ Mastering ${esPremium ? 'Premium' : 'Básico'} completado.`;
+    } catch(e) {
+        console.error(e);
+        statusText.textContent='❌ Error al masterizar la pista: ' + e.message;
+    }
+}
+</script>
+</body>
+</html>
